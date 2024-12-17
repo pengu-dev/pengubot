@@ -1,0 +1,17 @@
+.vscode/
+
+cogs/__pycache__
+cogs/utils/__pycache__
+
+backup_config.json
+config.json
+token.json
+*.db
+*.zip
+*.log
+
+*.disabled
+error.txt
+.env
+
+exit

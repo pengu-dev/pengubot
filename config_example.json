@@ -1,0 +1,33 @@
+{
+    "prefix": "!",
+    "permitted_roles": [
+        "Support",
+        "Owner",
+        "Admin"
+    ],
+    "cogs": [
+        "help",
+        "cooldown",
+        "errorhandler",
+        "database",
+        "minecraft"
+    ],
+    "cooldown_channels": {
+        "12345678901234567890": 1,
+        "12345678901234567891": 5
+    },
+    "cooldown_reduce_by": 5,
+    "log_channel_id": 12345678901234567890,
+    "main_server_id": 12345678901234567890,
+    "minecraft": {
+        "ip": "127.0.0.1",
+        "port": 6969,
+        "password": "penguinmafia#1",
+        "discord_server_id": "",
+        "permitted_roles": [],
+        "debug_mode": true,
+        "required_level_to_join": 10,
+        "server_invite_link": "INSERT HERE",
+        "log_channel_id": 123
+    }
+}
