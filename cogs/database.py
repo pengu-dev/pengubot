@@ -43,6 +43,17 @@ class Database(commands.Cog):
                 PRIMARY KEY (discord_user_id)
             )"""
         )
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS tags (
+                guild_id INTEGER NOT NULL,
+                name TEXT NOT NULL,
+                content TEXT NOT NULL,
+                use_count INTEGER DEFAULT 0,
+                PRIMARY KEY (guild_id, name)
+                )
+            """
+        )
         conn.commit()
         conn.close()
 
@@ -403,6 +414,84 @@ class Database(commands.Cog):
         finally:
             if conn:
                 conn.close()
+
+    #####################
+    ###     TAGS      ###
+    #####################
+
+    async def add_count(self, guild_id, name):
+        result = await self.run_query(
+            """
+            UPDATE tags
+            SET use_count = use_count + 1
+            WHERE guild_id = ? AND name = ?
+            """,
+            (guild_id, name),
+        )
+
+    async def get_tag(self, guild_id, name):
+        """Retrieves the content of a tag and increments the use_count."""
+        try:
+            # Fetch the tag content
+            result = await self.run_query(
+                """
+                SELECT content FROM tags
+                WHERE guild_id = ? AND name = ?
+                """,
+                (guild_id, name),
+                fetch=True,
+            )
+            if result and result[0]:
+                # Increment the use_count in parallel
+                return result[0][0]
+        except Exception as e:
+            print(f"Error getting tag: {e}")  # Handle potential errors
+        return None
+
+    async def create_tag(self, guild_id, name, content):
+        """Creates a new tag."""
+        await self.run_query(
+            """
+            INSERT INTO tags (guild_id, name, content)
+            VALUES (?, ?, ?)
+            """,
+            (guild_id, name, content),
+        )
+
+    async def edit_tag(self, guild_id, name, content):
+        """Edits an existing tag."""
+        await self.run_query(
+            """
+            UPDATE tags 
+            SET content = ? 
+            WHERE guild_id = ? AND name = ?
+            """,
+            (content, guild_id, name),
+        )
+
+    async def remove_tag(self, guild_id, name):
+        """Deletes a tag."""
+        await self.run_query(
+            """
+            DELETE FROM tags 
+            WHERE guild_id = ? AND name = ?
+            """,
+            (guild_id, name),
+        )
+
+    async def get_all_tags(self, guild_id):
+        """Retrieves all tag names in a guild."""
+        result = await self.run_query(
+            """
+            SELECT name FROM tags
+            WHERE guild_id = ?
+            """,
+            (guild_id,),
+            fetch=True,
+        )
+        if result:
+            return [row[0] for row in result]
+        return []
 
 
 async def setup(bot):

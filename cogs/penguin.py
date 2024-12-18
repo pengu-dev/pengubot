@@ -1,16 +1,16 @@
 import discord
 from discord.ext import commands
 import aiohttp
+from .utils import checks
 
 
 class penguin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(hidden=True)
+    @checks.is_donald()
     async def penguin(self, ctx):
-        if ctx.author.id != 289890066514575360:
-            return
         API_URL = "https://penguin.sjsharivker.workers.dev/api"
 
         async with aiohttp.ClientSession() as session:

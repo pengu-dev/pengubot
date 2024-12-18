@@ -11,7 +11,12 @@ def is_donald():  # More descriptive name
     """Check if the user is the bot owner (Donald)."""
 
     async def predicate(ctx: commands.Context):
-        return ctx.author.id == DONALD_ID
+        if ctx.author.id == DONALD_ID:
+            return True
+        else:
+            raise commands.CheckFailure(
+                "You must be **The Penguin** to use this command."
+            )
 
     return commands.check(predicate)
 
@@ -51,7 +56,9 @@ def in_mc():
     """Checks if the command is being used in the Minecraft Discord Server"""
 
     async def predicate(ctx: commands.Context):
-        if ctx.guild.id != MC_SERVER_ID or ctx.author.id == DONALD_ID:
+        if ctx.author.id == DONALD_ID:
+            return True
+        if ctx.guild.id != MC_SERVER_ID:
             raise commands.CheckFailure(
                 "This command is only usable in the Lewd Corner Minecraft Discord Server."
             )
@@ -64,7 +71,9 @@ def in_lc():
     """Check if the command is being used in the Lewd Corner Discord Server"""
 
     async def predicate(ctx: commands.Context):
-        if ctx.guild.id != LC_SERVER_ID or ctx.author.id == DONALD_ID:
+        if ctx.author.id == DONALD_ID:
+            return True
+        if ctx.guild.id != LC_SERVER_ID:
             raise commands.CheckFailure(
                 "This command is only usable in the Lewd Corner Discord Server."
             )

@@ -289,14 +289,9 @@ class Admin(commands.Cog):
                 )
             )
 
-    @commands.command(name="pull_repo")
+    @commands.command(name="pull-repo")
     @checks.is_donald()
-    async def update_from_repo(
-        self,
-        ctx,
-        branch: str = "master",
-        repo_url: str = "https://github.com/pengu-dev/pengubot",
-    ):
+    async def update_from_repo(self, ctx, branch: str = "master", repo_url=None):
         """
         Updates cogs and utils from a GitHub repository.
 
@@ -304,13 +299,19 @@ class Admin(commands.Cog):
         from the specified GitHub repository and updates the
         corresponding files in the bot's directory.
 
+        Args:
+            branch:str      — Defaults to master
+            repo_url:str    — Defaults to https://github.com/pengu-dev/pengubot
+
         Usage:
-            !update_from_repo <repo_url>
+            !pull-repo <branch> <repo_url>
 
         Example:
-            !update_from_repo https://github.com/your-username/your-repo
+            !pull-repo dev https://github.com/your-username/your-repo
         """
         try:
+            if repo_name is None:
+                repo_name = "https://github.com/pengu-dev/pengubot"
             # Extract the repository name from the URL
             repo_name = repo_url.split("/")[-1]
 

@@ -7,7 +7,7 @@ import json
 from .utils import checks
 
 
-class cooldown(commands.Cog):
+class Cooldown(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.permitted_roles = bot.config.get("permitted_roles")
@@ -664,4 +664,4 @@ class cooldown(commands.Cog):
 # In your main bot file:
 # Load the cog:
 async def setup(bot):
-    await bot.add_cog(cooldown(bot))
+    await bot.add_cog(Cooldown(bot))
